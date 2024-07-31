@@ -1,9 +1,15 @@
 using System.Reflection;
-using MediatR;
+using Microsoft.EntityFrameworkCore;
+using SSO.Database;
 using SSO.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+builder.Services.AddDbContext<ApplicationDbContext>(opt =>
+    opt.UseNpgsql(builder.Configuration.GetConnectionString("Database")));
 // Add services to the container.
 builder.Services.AddGrpc();
 
