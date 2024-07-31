@@ -8,6 +8,6 @@ public class RegisterRequestHandler: IRequestHandler<RegisterRequest, RegisterRe
 {
     public Task<RegisterResponse> Handle(RegisterRequest request, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        return Task.FromResult(new RegisterResponse { UserId = 1 });
     }
 }

@@ -8,6 +8,6 @@ public class LoginRequestHandler : IRequestHandler<LoginRequest, LoginResponse>
 {
     public Task<LoginResponse> Handle(LoginRequest request, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        return Task.FromResult(new LoginResponse { AccessToken = "test RPC" });
     }
 }
