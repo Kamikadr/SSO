@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+option csharp_namespace = "SSO.Messages";
+
+package auth;
+
+message RegisterRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message RegisterResponse {
+  int64 userId = 1;
+}
+
+message LoginRequest {
+  int64 appId = 1;
+  string email = 2;
+  string password = 3;
+}
+
+message LoginResponse {
+  string accessToken = 1;
+}

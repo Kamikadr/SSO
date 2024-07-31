@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+option csharp_namespace = "SSO.Services";
+
+import "ssoMessages.proto";
+
+package auth;
+
+service Auth {
+  rpc Register (RegisterRequest) returns (RegisterResponse);
+  rpc Login (LoginRequest) returns (LoginResponse);
+}
+
+
+
