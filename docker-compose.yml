@@ -5,7 +5,7 @@ services:
     image: postgres:latest
     container_name: postgres_container
     environment:
-      POSTGRES_DB: pik_dev
+      POSTGRES_DB: sso_dev
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgre-sql
     ports:
