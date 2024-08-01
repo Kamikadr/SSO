@@ -2,7 +2,15 @@
 
 namespace SSO.Messages;
 
-public partial class LoginRequest: IRequest<LoginResponse>;
+public partial class LoginRequest : IRequest<LoginResponse>
+{
+    public LoginRequest(long appId, string email, string password)
+    {
+        AppId = appId;
+        Email = email;
+        Password = password;
+    }
+}
 
 public class LoginRequestHandler : IRequestHandler<LoginRequest, LoginResponse>
 {

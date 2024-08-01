@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SSO.Entities;
+namespace SSO.Dtos;
 
-public record User(string name, string password)
+public record UserDto(string name, string password)
 {
     public long Id { get; set; }
 

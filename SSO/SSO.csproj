@@ -7,11 +7,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Protobuf Include="Protos\ssoServices.proto" GrpcServices="Server" ProtoRoot="Protos" />
+        <Protobuf Include="Protos\ssoServices.proto" GrpcServices="Both" ProtoRoot="Protos" />
         <Protobuf Include="Protos\ssoMessages.proto" ProtoRoot="Protos" />
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="AutoMapper" Version="13.0.1" />
         <PackageReference Include="Google.Protobuf" Version="3.28.0-rc1" />
         <PackageReference Include="Grpc.AspNetCore" Version="2.57.0"/>
         <PackageReference Include="Grpc.Tools" Version="2.65.0">
@@ -25,6 +26,7 @@
 
     <ItemGroup>
       <Folder Include="Database\Migrations\" />
+      <Folder Include="Models\" />
     </ItemGroup>
 
 </Project>
