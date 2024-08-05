@@ -14,7 +14,7 @@ using Testcontainers.PostgreSql;
 
 namespace Endpoint.IntegrationTests;
 
-public class CustomWebApplicationFactory: WebApplicationFactory<Program>, IAsyncLifetime
+public class TestWebApplicationFactory: WebApplicationFactory<Program>, IAsyncLifetime
 {
     private readonly PostgreSqlContainer _postgreSqlContainer = new PostgreSqlBuilder()
         .WithDatabase("db_for_testing")

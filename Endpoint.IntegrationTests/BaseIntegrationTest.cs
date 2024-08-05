@@ -1,10 +1,7 @@
-﻿using Endpoint.IntegrationTests.Helpers;
-using Grpc.Net.Client;
-using Microsoft.VisualStudio.TestPlatform.TestHost;
+﻿namespace Endpoint.IntegrationTests;
 
-namespace Endpoint.IntegrationTests;
-
-public abstract class BaseIntegrationTest(CustomWebApplicationFactory customWebApplicationFactory): IClassFixture<CustomWebApplicationFactory>, IAsyncLifetime
+public abstract class BaseIntegrationTest(TestWebApplicationFactory testWebApplicationFactory)
+    : IClassFixture<TestWebApplicationFactory>, IAsyncLifetime
 {
     private ApiClientManager? _apiClient;
 
@@ -14,7 +11,7 @@ public abstract class BaseIntegrationTest(CustomWebApplicationFactory customWebA
         {
             if (_apiClient == null)
             {
-                _apiClient = new ApiClientManager(customWebApplicationFactory);
+                _apiClient = new ApiClientManager(testWebApplicationFactory);
             }
 
             return _apiClient;
@@ -23,12 +20,12 @@ public abstract class BaseIntegrationTest(CustomWebApplicationFactory customWebA
 
     public Task InitializeAsync()
     {
-        _apiClient = new ApiClientManager(customWebApplicationFactory);
+        _apiClient = new ApiClientManager(testWebApplicationFactory);
         return Task.CompletedTask;
     }
 
     public async Task DisposeAsync()
     {
-        await customWebApplicationFactory.ResetDatabaseAsync();
+        await testWebApplicationFactory.ResetDatabaseAsync();
     }
 }

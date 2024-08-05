@@ -7,7 +7,7 @@ public class ApiClientManager
 {
     public Auth.AuthClient AuthApiClient { get; }
 
-    public ApiClientManager(CustomWebApplicationFactory applicationFactory)
+    public ApiClientManager(TestWebApplicationFactory applicationFactory)
     {
         var options = new GrpcChannelOptions { HttpHandler = applicationFactory.Server.CreateHandler() };
         var channel = GrpcChannel.ForAddress(applicationFactory.Server.BaseAddress, options);

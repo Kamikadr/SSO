@@ -1,12 +1,9 @@
-﻿using Grpc.Net.Client;
-using Microsoft.AspNetCore.Mvc.Testing;
-using SSO.Messages;
-using SSO.Services;
+﻿using SSO.Messages;
 
 namespace Endpoint.IntegrationTests;
 
-public class AuthServiceBaseIntegrationTest(CustomWebApplicationFactory customWebApplicationFactory)
-    : BaseIntegrationTest(customWebApplicationFactory)
+public class AuthServiceBaseIntegrationTest(TestWebApplicationFactory testWebApplicationFactory)
+    : BaseIntegrationTest(testWebApplicationFactory)
 {
 
     [Fact]
@@ -21,5 +18,15 @@ public class AuthServiceBaseIntegrationTest(CustomWebApplicationFactory customWe
         
         Assert.NotNull(response);
         Assert.Equal("test RPC", response.AccessToken);
+    }
+
+    [Fact]
+    public async Task WhenRegisterShouldComplete()
+    {
+        var request = new RegisterRequest();
+
+        var response = await ApiClient.AuthApiClient.RegisterAsync(request);
+        
+        Assert.NotNull(response);
     }
 }
