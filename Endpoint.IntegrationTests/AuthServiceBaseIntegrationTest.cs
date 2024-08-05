@@ -5,8 +5,8 @@ using SSO.Services;
 
 namespace Endpoint.IntegrationTests;
 
-public class AuthServiceBaseIntegrationTest(SsoFixture ssoFixture)
-    : BaseIntegrationTest(ssoFixture)
+public class AuthServiceBaseIntegrationTest(CustomWebApplicationFactory customWebApplicationFactory)
+    : BaseIntegrationTest(customWebApplicationFactory)
 {
 
     [Fact]

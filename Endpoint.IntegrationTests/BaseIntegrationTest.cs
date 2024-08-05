@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestPlatform.TestHost;
 
 namespace Endpoint.IntegrationTests;
 
-public abstract class BaseIntegrationTest(SsoFixture ssoFixture): IClassFixture<SsoFixture>, IAsyncLifetime
+public abstract class BaseIntegrationTest(CustomWebApplicationFactory customWebApplicationFactory): IClassFixture<CustomWebApplicationFactory>, IAsyncLifetime
 {
     private ApiClientManager? _apiClient;
 
@@ -14,7 +14,7 @@ public abstract class BaseIntegrationTest(SsoFixture ssoFixture): IClassFixture<
         {
             if (_apiClient == null)
             {
-                _apiClient = new ApiClientManager(ssoFixture.Factory);
+                _apiClient = new ApiClientManager(customWebApplicationFactory);
             }
 
             return _apiClient;
@@ -23,12 +23,12 @@ public abstract class BaseIntegrationTest(SsoFixture ssoFixture): IClassFixture<
 
     public Task InitializeAsync()
     {
-        _apiClient = new ApiClientManager(ssoFixture.Factory);
+        _apiClient = new ApiClientManager(customWebApplicationFactory);
         return Task.CompletedTask;
     }
 
     public async Task DisposeAsync()
     {
-        await ssoFixture.ResetDatabaseState();
+        await customWebApplicationFactory.ResetDatabaseAsync();
     }
 }
