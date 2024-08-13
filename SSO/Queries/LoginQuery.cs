@@ -3,6 +3,7 @@ using Grpc.Core;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SSO.Database;
+using SSO.Services;
 
 namespace SSO.Messages;
 
@@ -23,7 +24,7 @@ public class LoginQueryValidator : AbstractValidator<LoginQuery>
 }
 
 
-public class LoginRequestHandler(ApplicationDbContext dbContext) : IRequestHandler<LoginQuery, LoginResponse>
+public class LoginRequestHandler(ApplicationDbContext dbContext, TokenService tokenService) : IRequestHandler<LoginQuery, LoginResponse>
 {
     public async Task<LoginResponse> Handle(LoginQuery request, CancellationToken cancellationToken)
     {
@@ -33,6 +34,7 @@ public class LoginRequestHandler(ApplicationDbContext dbContext) : IRequestHandl
             throw new RpcException(new Status(StatusCode.NotFound, "Email or password is invalid. User not found"));
         }
 
-        return new LoginResponse();
+        var tokens = tokenService.GenerateTokens(user);
+        return new LoginResponse {AccessToken = tokens.AccessToken, RefreshToken = tokens.RefreshToken};
     }
 }
