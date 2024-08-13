@@ -2,6 +2,10 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SSO", "SSO\SSO.csproj", "{A5934B1C-7A7C-4F56-81B3-B659289CD2A4}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{2F1B8500-5F6A-4CD4-9A5C-51E3DAB35A41}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Endpoint.IntegrationTests", "Endpoint.IntegrationTests\Endpoint.IntegrationTests.csproj", "{28DD9AFE-2E9B-457D-9760-84D60C7953DC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +16,12 @@ Global
 		{A5934B1C-7A7C-4F56-81B3-B659289CD2A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A5934B1C-7A7C-4F56-81B3-B659289CD2A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A5934B1C-7A7C-4F56-81B3-B659289CD2A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28DD9AFE-2E9B-457D-9760-84D60C7953DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28DD9AFE-2E9B-457D-9760-84D60C7953DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28DD9AFE-2E9B-457D-9760-84D60C7953DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28DD9AFE-2E9B-457D-9760-84D60C7953DC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{28DD9AFE-2E9B-457D-9760-84D60C7953DC} = {2F1B8500-5F6A-4CD4-9A5C-51E3DAB35A41}
 	EndGlobalSection
 EndGlobal
