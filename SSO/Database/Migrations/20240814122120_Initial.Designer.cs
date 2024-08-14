@@ -13,8 +13,8 @@ using SSO.Database;
 namespace SSO.Database.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240814114555_Add_many_to_many_relations")]
-    partial class Add_many_to_many_relations
+    [Migration("20240814122120_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
