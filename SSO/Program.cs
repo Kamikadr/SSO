@@ -8,7 +8,7 @@ using SSO.Services;
 
 namespace SSO;
 
-public partial  class Program
+public class Program
 {
     public static async Task Main(string[] args)
     {
