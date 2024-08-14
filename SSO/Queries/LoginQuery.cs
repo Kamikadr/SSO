@@ -27,7 +27,7 @@ public class LoginRequestHandler(ApplicationDbContext dbContext) : IRequestHandl
 {
     public async Task<LoginResponse> Handle(LoginQuery request, CancellationToken cancellationToken)
     {
-        var user = await dbContext.Users.SingleOrDefaultAsync(u => u.Email == request.Email && u.Password == request.Password, cancellationToken);
+        var user = await dbContext.Users.SingleOrDefaultAsync(u => u.Email == request.Email && u.PasswordHash == request.Password, cancellationToken);
         if (user == null)
         {
             throw new RpcException(new Status(StatusCode.NotFound, "Email or password is invalid. User not found"));

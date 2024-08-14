@@ -2,6 +2,7 @@ using System.Reflection;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 using SSO.Database;
 using SSO.Services;
 
@@ -16,19 +17,33 @@ public partial  class Program
 
         var app = builder.Build();
         
+        await SetupDatabase(app);
         ConfigureRouter(app);
         await app.RunAsync();
     }
+
     
+
     private static void AddServices(WebApplicationBuilder builder)
     {
-        builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidatorBehaviour<,>));
+        var dataSourceBuilder = new NpgsqlDataSourceBuilder(builder.Configuration.GetConnectionString("Database"));
+        dataSourceBuilder.UseNodaTime();
+        var dataSource = dataSourceBuilder.Build();
         builder.Services.AddDbContext<ApplicationDbContext>(opt =>
-            opt.UseNpgsql(builder.Configuration.GetConnectionString("Database")));
+            opt.UseNpgsql(dataSource, o => o.UseNodaTime()));
+        
+        builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidatorBehaviour<,>));
         builder.Services.AddGrpc();
         builder.Services.AddAutoMapper(typeof(MappingProfile));
         builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+    }
+    
+    private static async Task SetupDatabase(WebApplication app)
+    {
+        using var scope = app.Services.CreateScope();
+        var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        await dbContext.Database.MigrateAsync();
     }
     
     private static void ConfigureRouter(WebApplication app)
