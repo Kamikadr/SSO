@@ -33,10 +33,12 @@ public class TestWebApplicationFactory: WebApplicationFactory<Program>, IAsyncLi
         builder.ConfigureTestServices(services =>
         {
             services.RemoveAll(typeof(DbContextOptions<ApplicationDbContext>));
-            services.AddDbContext<ApplicationDbContext>(options =>
-            {
-                options.UseNpgsql(_postgreSqlContainer.GetConnectionString());
-            });
+            
+            var dataSourceBuilder = new NpgsqlDataSourceBuilder(_postgreSqlContainer.GetConnectionString());
+            dataSourceBuilder.UseNodaTime();
+            var dataSource = dataSourceBuilder.Build();
+            services.AddDbContext<ApplicationDbContext>(opt =>
+                opt.UseNpgsql(dataSource, o => o.UseNodaTime()));
             
             services.RemoveAll(typeof(IDbConnectionFactory));
             services.AddSingleton<IDbConnectionFactory>(_ => new NpgsqlConnectionFactory());
