@@ -37,6 +37,8 @@ public class Program
         builder.Services.AddAutoMapper(typeof(MappingProfile));
         builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+        
+        builder.Services.
     }
     
     private static async Task SetupDatabase(WebApplication app)

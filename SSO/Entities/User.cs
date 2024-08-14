@@ -4,7 +4,7 @@ using SSO.Enums;
 
 namespace SSO.Entities;
 
-public record User(string Email, string PasswordHash, string FullName)
+public record User(string Email, string Nickname, string PasswordHash, string Salt)
 {
     public long Id { get; set; }
     
@@ -12,10 +12,12 @@ public record User(string Email, string PasswordHash, string FullName)
     public string? FullName { get; set; }
     
     [MaxLength(100)]
-    public string Username { get; set; } = FullName;
+    public string Username { get; set; } = Nickname;
     
     [MaxLength(100)]
     public string PasswordHash { get; set; } = PasswordHash;
+    [MaxLength(20)]
+    public string Salt { get; set; } = Salt;
     
     [MaxLength(100)]
     public string Email { get; set; } = Email;

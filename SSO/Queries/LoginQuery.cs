@@ -28,12 +28,18 @@ public class LoginRequestHandler(ApplicationDbContext dbContext, TokenService to
 {
     public async Task<LoginResponse> Handle(LoginQuery request, CancellationToken cancellationToken)
     {
-        var user = await dbContext.Users.SingleOrDefaultAsync(u => u.Email == request.Email && u.PasswordHash == request.Password, cancellationToken);
+        var user = await dbContext.Users.SingleOrDefaultAsync(u => u.Email == request.Email, cancellationToken);
         if (user == null)
         {
-            throw new RpcException(new Status(StatusCode.NotFound, "Email or password is invalid. User not found"));
+            throw new RpcException(new Status(StatusCode.NotFound, "Email or password is invalid."));
         }
 
+        var requestPasswordHash = await HashHelper.GetStringHashAsync(request.Password, user.Salt, cancellationToken);
+        if (requestPasswordHash != user.PasswordHash)
+        {
+            throw new RpcException(new Status(StatusCode.NotFound, "Email or password is invalid."));
+        }
+        
         var tokens = tokenService.GenerateTokens(user);
         return new LoginResponse {AccessToken = tokens.AccessToken, RefreshToken = tokens.RefreshToken};
     }

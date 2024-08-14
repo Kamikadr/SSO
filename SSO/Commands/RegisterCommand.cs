@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text;
 using FluentValidation;
 using Grpc.Core;
 using MediatR;
@@ -6,12 +7,14 @@ using Microsoft.EntityFrameworkCore;
 using SSO.Database;
 using SSO.Entities;
 using SSO.Extensions;
+using SSO.Helpers;
 using SSO.Messages;
+using SSO.Services;
 
 namespace SSO.Commands;
 
 
-public record RegisterCommand(string Email, string Password) : IRequest<RegisterResponse>;
+public record RegisterCommand(string Email, string Password, string Nickname) : IRequest<RegisterResponse>;
 
 
 public class RegisterCommandValidator : AbstractValidator<RegisterCommand>
@@ -33,7 +36,11 @@ public class RegisterRequestHandler(ApplicationDbContext dbContext): IRequestHan
 {
     public async Task<RegisterResponse> Handle(RegisterCommand command, CancellationToken cancellationToken)
     {
-        var newUser = new User(command.Email, command.Password, command.Email);
+        var salt = SaltGenerator.GenerateSalt();
+        var passwordHash = await HashHelper.GetStringHashAsync(command.Password, salt, cancellationToken);
+        var saltString = Encoding.UTF8.GetString(salt);
+        
+        var newUser = new User(command.Email, command.Nickname, passwordHash, saltString);
         try
         {
             await dbContext.Users.AddAsync(newUser, cancellationToken);
