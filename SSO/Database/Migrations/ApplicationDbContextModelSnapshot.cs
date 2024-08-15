@@ -211,6 +211,10 @@ namespace SSO.Database.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
+                    b.Property<string>("Nickname")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -218,6 +222,11 @@ namespace SSO.Database.Migrations
 
                     b.Property<Instant>("RegisteredAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<byte[]>("Salt")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("bytea");
 
                     b.Property<int>("Status")
                         .HasColumnType("integer");

@@ -80,9 +80,11 @@ namespace SSO.Database.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Nickname = table.Column<string>(type: "text", nullable: false),
                     FullName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
                     Username = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     PasswordHash = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Salt = table.Column<byte[]>(type: "bytea", maxLength: 20, nullable: false),
                     Email = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     RegisteredAt = table.Column<Instant>(type: "timestamp with time zone", nullable: false),
                     Status = table.Column<int>(type: "integer", nullable: false)

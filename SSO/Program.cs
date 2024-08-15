@@ -2,13 +2,14 @@ using System.Reflection;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using SSO.Configs;
 using Npgsql;
 using SSO.Database;
 using SSO.Services;
 
 namespace SSO;
 
-public class Program
+public partial  class Program
 {
     public static async Task Main(string[] args)
     {
@@ -21,11 +22,13 @@ public class Program
         ConfigureRouter(app);
         await app.RunAsync();
     }
-
     
-
     private static void AddServices(WebApplicationBuilder builder)
     {
+        builder.Services.Configure<TokenConfig>(builder.Configuration.GetSection("TokenGenerationSettings"));
+
+        builder.Services.AddSingleton<TokenService>();
+        builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidatorBehaviour<,>));
         var dataSourceBuilder = new NpgsqlDataSourceBuilder(builder.Configuration.GetConnectionString("Database"));
         dataSourceBuilder.UseNodaTime();
         var dataSource = dataSourceBuilder.Build();
@@ -37,8 +40,6 @@ public class Program
         builder.Services.AddAutoMapper(typeof(MappingProfile));
         builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
-        
-        builder.Services.
     }
     
     private static async Task SetupDatabase(WebApplication app)

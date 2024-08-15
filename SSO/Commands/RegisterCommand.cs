@@ -38,9 +38,7 @@ public class RegisterRequestHandler(ApplicationDbContext dbContext): IRequestHan
     {
         var salt = SaltGenerator.GenerateSalt();
         var passwordHash = await HashHelper.GetStringHashAsync(command.Password, salt, cancellationToken);
-        var saltString = Encoding.UTF8.GetString(salt);
-        
-        var newUser = new User(command.Email, command.Nickname, passwordHash, saltString);
+        var newUser = new User(command.Email, command.Nickname, passwordHash, salt);
         try
         {
             await dbContext.Users.AddAsync(newUser, cancellationToken);

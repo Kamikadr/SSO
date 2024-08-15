@@ -2,14 +2,14 @@
 using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using SSO.Configs;
 using SSO.Entities;
 
 namespace SSO.Services;
 
-public record TokenConfig(string SecretKey, TimeSpan AccessTokenDuration, TimeSpan RefreshTokenDuration);
 public class TokenService(IOptions<TokenConfig> options)
 {
-    private readonly TokenConfig _config = options.Value ?? throw new ArgumentException( "", nameof(options));
+    private readonly TokenConfig _config = options.Value ?? throw new ArgumentException( "Config is not found or validation error", nameof(options));
 
     public (string AccessToken, string RefreshToken) GenerateTokens(User user)
     {
@@ -20,12 +20,12 @@ public class TokenService(IOptions<TokenConfig> options)
     
     public string GenerateAccessToken(User user)
     {
-        return GenerateToken(user, _config.AccessTokenDuration);
+        return GenerateToken(user, _config.AccessTokenLifetimeInterval);
     }
     
     public string GenerateRefreshToken(User user)
     {
-        return GenerateToken(user, _config.RefreshTokenDuration);
+        return GenerateToken(user, _config.RefreshTokenLifetimeInterval);
     }
     
     private string GenerateToken(User user, TimeSpan timeInterval)
