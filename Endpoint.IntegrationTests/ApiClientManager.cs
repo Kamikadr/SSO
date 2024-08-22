@@ -1,4 +1,5 @@
 ﻿using Grpc.Net.Client;
+using SSO.ApiServices;
 using SSO.Services;
 
 namespace Endpoint.IntegrationTests;

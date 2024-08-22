@@ -1,12 +1,13 @@
 ﻿using AutoMapper;
 using Grpc.Core;
 using MediatR;
+using SSO.ApiMessages;
 using SSO.Commands;
 using SSO.Messages;
 
-namespace SSO.Services;
+namespace SSO.ApiServices;
 
-public class AuthService(IMediator mediator, IMapper mapper): Auth.AuthBase
+public class AuthApiService(IMediator mediator, IMapper mapper): Auth.AuthBase
 {
     public override async Task<LoginResponse> Login(LoginRequest request, ServerCallContext context)
     {

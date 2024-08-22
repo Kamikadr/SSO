@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using SSO.ApiMessages;
 using SSO.Commands;
 using SSO.Messages;
 

@@ -18,6 +18,8 @@ public class TokenService(IOptions<TokenConfig> options)
         return (accessToken, refreshToken);
     }
     
+    public string ValidateToken()
+    
     public string GenerateAccessToken(User user)
     {
         return GenerateToken(user, _config.AccessTokenLifetimeInterval);

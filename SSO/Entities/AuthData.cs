@@ -8,11 +8,11 @@ public class AuthData(long userId, long serviceId)
     
     public string? RefreshToken { get; set; }
     public Instant CreatedAt { get; init; } = SystemClock.Instance.GetCurrentInstant();
-    public DateTime? UpdatedAt { get; set; }
+    public Instant? UpdatedAt { get; set; }
 
     public long UserId { get; init; } = userId;
-    public required User User { get; init; }
+    public User User { get; init; } = null!;
 
     public long ServiceId { get; init; } = serviceId;
-    public required Service Service { get; init; }
+    public Service Service { get; init; }  = null!;
 }

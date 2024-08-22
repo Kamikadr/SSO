@@ -55,5 +55,7 @@ public class ApplicationDbContext(DbContextOptions options) : DbContext(options)
             .HasMany(r => r.Permissions)
             .WithMany(p => p.Roles)
             .UsingEntity<RolePermission>();
+        
     }
+
 }

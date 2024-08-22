@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+option csharp_namespace = "SSO.ApiMessages";
+
+package admin;
+
+message AddServiceRequest {
+  string name = 1;
+}
+
+message AddServiceResponse {
+  int64 serviceId = 1;
+}
+
+message IsAdminRequest {
+  string userEmail = 1;
+}
+
+message IsAdminResponse {
+  bool isAdmin = 1;
+}

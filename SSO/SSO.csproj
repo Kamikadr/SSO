@@ -9,6 +9,8 @@
     <ItemGroup>
         <Protobuf Include="Protos\ssoServices.proto" GrpcServices="Both" ProtoRoot="Protos" />
         <Protobuf Include="Protos\ssoMessages.proto" ProtoRoot="Protos" />
+        <Protobuf Include="Protos\AdminServices.proto" GrpcServices="Both" ProtoRoot="Protos" />
+        <Protobuf Include="Protos\AdminMessages.proto" ProtoRoot="Protos" />
     </ItemGroup>
 
     <ItemGroup>

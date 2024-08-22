@@ -1,4 +1,7 @@
-﻿namespace Endpoint.IntegrationTests;
+﻿using SSO.ApiMessages;
+using SSO.Messages;
+
+namespace Endpoint.IntegrationTests;
 
 public abstract class BaseIntegrationTest(TestWebApplicationFactory testWebApplicationFactory)
     : IClassFixture<TestWebApplicationFactory>, IAsyncLifetime
@@ -17,6 +20,8 @@ public abstract class BaseIntegrationTest(TestWebApplicationFactory testWebAppli
             return _apiClient;
         }
     }
+
+    protected LoginRequest AdminUserData = new LoginRequest { Email = "admin@email.com", Password = "admin1" };
 
     public Task InitializeAsync()
     {

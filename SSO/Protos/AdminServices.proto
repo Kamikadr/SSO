@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+option csharp_namespace = "SSO.ApiServices";
+
+import "AdminMessages.proto";
+
+package admin;
+
+service Admin {
+  rpc AddService (AddServiceRequest) returns (AddServiceResponse);
+  rpc IsAdmin (IsAdminRequest) returns (IsAdminResponse);
+}

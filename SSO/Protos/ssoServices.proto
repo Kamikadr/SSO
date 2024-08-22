@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option csharp_namespace = "SSO.Services";
+option csharp_namespace = "SSO.ApiServices";
 
 import "ssoMessages.proto";
 

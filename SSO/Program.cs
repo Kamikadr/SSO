@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SSO.Configs;
 using Npgsql;
+using SSO.ApiServices;
 using SSO.Database;
 using SSO.Services;
 
@@ -51,7 +52,7 @@ public partial  class Program
     
     private static void ConfigureRouter(WebApplication app)
     {
-        app.MapGrpcService<AuthService>();
+        app.MapGrpcService<AuthApiService>();
         app.MapGet("/",
             () =>
                 "Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");

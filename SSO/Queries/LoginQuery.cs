@@ -2,12 +2,15 @@
 using Grpc.Core;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using NodaTime;
+using SSO.ApiMessages;
 using SSO.Database;
+using SSO.Entities;
 using SSO.Services;
 
 namespace SSO.Messages;
 
-public record LoginQuery(string Email, string Password) : IRequest<LoginResponse>;
+public record LoginQuery(string Email, string Password, string AppName) : IRequest<LoginResponse>;
 
 
 public class LoginQueryValidator : AbstractValidator<LoginQuery>
@@ -28,7 +31,10 @@ public class LoginRequestHandler(ApplicationDbContext dbContext, TokenService to
 {
     public async Task<LoginResponse> Handle(LoginQuery request, CancellationToken cancellationToken)
     {
-        var user = await dbContext.Users.SingleOrDefaultAsync(u => u.Email == request.Email, cancellationToken);
+        var user = await dbContext.Users
+            .Include(u => u.AuthDatas)
+            .ThenInclude(ad => ad.Service).Include(user => user.Services)
+            .SingleOrDefaultAsync(u => u.Email == request.Email, cancellationToken);
         if (user == null)
         {
             throw new RpcException(new Status(StatusCode.NotFound, "Email or password is invalid."));
@@ -41,6 +47,37 @@ public class LoginRequestHandler(ApplicationDbContext dbContext, TokenService to
         }
         
         var tokens = tokenService.GenerateTokens(user);
+        var authData = await FindOrCreateAuthData(request, cancellationToken, user);
+        authData.RefreshToken = tokens.RefreshToken;
+        
+        await dbContext.SaveChangesAsync(cancellationToken);
+        
         return new LoginResponse {AccessToken = tokens.AccessToken, RefreshToken = tokens.RefreshToken};
+    }
+
+    private async Task<AuthData> FindOrCreateAuthData(LoginQuery request, CancellationToken cancellationToken, User user)
+    {
+        var authData = user.AuthDatas.Find(ad => ad.Service.Name == request.AppName);
+
+        if (authData == null)
+        {
+            var service =
+                await dbContext.Services
+                    .FirstOrDefaultAsync(s => s.Name == request.AppName
+                                              && s.Status == Enums.Status.Active, cancellationToken);
+            if (service == null)
+            {
+                throw new RpcException(new Status(StatusCode.NotFound, $"App with name {request.AppName} not found"));
+            }
+            
+            authData = new AuthData(user.Id, service.Id);
+            dbContext.AuthDatas.Add(authData);
+        }
+        else
+        {
+            authData.UpdatedAt = SystemClock.Instance.GetCurrentInstant();
+        }
+
+        return authData;
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Grpc.Core;
+using SSO.ApiMessages;
 using SSO.Messages;
 
 namespace Endpoint.IntegrationTests;
@@ -11,7 +12,7 @@ public class AuthServiceBaseIntegrationTest(TestWebApplicationFactory testWebApp
     public async Task WhenLoginShouldSuccess()
     {
         //Arrange
-        var request = new LoginRequest { AppId = 1, Email = "email@email.com", Password = "qwertyu" };
+        var request = new LoginRequest { AppName = "MyApp", Email = "email@email.com", Password = "qwertyu" };
         var registerRequest = new RegisterRequest{ Email = request.Email, Password = request.Password};
         var registerResponse = await ApiClient.AuthApiClient.RegisterAsync(registerRequest);
         Assert.NotNull(registerResponse);
